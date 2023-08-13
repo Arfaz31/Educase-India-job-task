@@ -2,30 +2,34 @@ import React, { useContext } from "react";
 import Lottie from "lottie-react";
 import { FaGoogle } from "react-icons/fa6";
 import register from "../assets/register/118046-lf20-oahmox5rjson.json";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProviders";
 const Register = () => {
-const {createUser} = useContext(AuthContext)
+  const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/setting";
 
-    const handleRegister = event =>{
-        event.preventDefault();
-        const form = event.target;
-        const name = form.name.value;
-        const email = form.email.value;
-        const password = form.password.value;
-        console.log(name, email, password)
+  const handleRegister = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(name, email, password);
 
-        createUser(email, password) 
-        .then(result =>{
-            const user =result.user
-            console.log(user)
-            form.reset
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
-    
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate(from, { replace: true });
+        form.reset();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="bg-slate-100 pb-20 md:pt-20 pt-24">
       <h1 className="font-bold md:text-4xl text-2xl text-center pt-10 md:pb-0 pb-8">
@@ -109,15 +113,27 @@ const {createUser} = useContext(AuthContext)
                           <span className="label-text">Are you an Agency?</span>
                         </label>
                         <div class="flex items-center">
-                    <label for="yes" className="mr-6">
-                        <input type="radio" id="yes" name="agency" value="yes" className="form-radio h-4 w-4 text-indigo-700"/>
-                        <span className="ml-2">Yes</span>
-                    </label>
-                    <label for="no">
-                        <input type="radio" id="no" name="agency" value="no" className="form-radio h-4 w-4 text-indigo-700"/>
-                        <span className="ml-2">No</span>
-                    </label>
-                      </div>
+                          <label for="yes" className="mr-6">
+                            <input
+                              type="radio"
+                              id="yes"
+                              name="agency"
+                              value="yes"
+                              className="form-radio h-4 w-4 text-indigo-700"
+                            />
+                            <span className="ml-2">Yes</span>
+                          </label>
+                          <label for="no">
+                            <input
+                              type="radio"
+                              id="no"
+                              name="agency"
+                              value="no"
+                              className="form-radio h-4 w-4 text-indigo-700"
+                            />
+                            <span className="ml-2">No</span>
+                          </label>
+                        </div>
                       </div>
 
                       <div className="form-control pt-10">
@@ -131,9 +147,7 @@ const {createUser} = useContext(AuthContext)
                       <div>
                         <div className="divider">Or Sign In With</div>
                         <div className="w-full text-center my-4">
-                          <button
-                            className="btn btn-circle btn-outline"
-                          >
+                          <button className="btn btn-circle btn-outline">
                             <FaGoogle />
                           </button>
                         </div>

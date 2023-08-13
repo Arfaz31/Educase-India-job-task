@@ -1,13 +1,16 @@
 import React, { useContext, useState } from "react";
 import Lottie from "lottie-react";
 import login from "../../assets/login.json";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProviders";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const {signIn} = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/setting";
 
   const handleEmailChange = (event) => {
     const newEmail = event.target.value;
@@ -21,23 +24,24 @@ const Login = () => {
     setIsButtonEnabled(email !== "" && newPassword !== "");
   };
 
-  const handleLogin =(event) =>{
+  const handleLogin = (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password)
+    console.log(email, password);
 
-    signIn(email, password) 
-    .then(result =>{
-        const user =result.user
-        console.log(user)
-        form.reset
-    })
-    .catch(error => {
-        console.log(error)
-    })
-  }
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate(from, { replace: true });
+        form.reset();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="bg-slate-100 pb-32 md:pt-16 pt-24">
@@ -115,8 +119,11 @@ const Login = () => {
                       </div>
                     </form>
                     <p className="my-4 text-center">
-                      New to PopX? {" "}
-                      <Link className="text-indigo-700 font-bold" to="/register">
+                      New to PopX?{" "}
+                      <Link
+                        className="text-indigo-700 font-bold"
+                        to="/register"
+                      >
                         Sign Up
                       </Link>
                     </p>
@@ -128,8 +135,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-
-  
   );
 };
 
