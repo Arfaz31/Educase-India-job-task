@@ -5,10 +5,10 @@ import register from "../assets/register/118046-lf20-oahmox5rjson.json";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProviders";
 const Register = () => {
-  const { createUser, userUpdateData } = useContext(AuthContext);
+  const { createUser, userUpdateData, googleSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/setting";
+  const from = location.state?.from?.pathname || "/login";
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -23,7 +23,6 @@ const Register = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-       
         userUpdateData(result.user, name)
           .then(() => {
             console.log("update");
@@ -37,9 +36,21 @@ const Register = () => {
       .catch((error) => {
         console.log(error);
       });
-
       form.reset()
   };
+
+  //google login
+  const handleSignInWithGoogle = () => {
+    googleSignIn()
+      .then((result) => {
+        const user = result.user;
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log("error massage", error.massage);
+      });
+  };
+
 
   return (
     <div className="bg-slate-100 pb-20 md:pt-20 pt-24">
@@ -158,7 +169,11 @@ const Register = () => {
                       <div>
                         <div className="divider">Or Sign In With</div>
                         <div className="w-full text-center my-4">
-                          <button className="btn btn-circle btn-outline">
+                          <button 
+                          className="btn btn-circle btn-outline"
+                          onClick={handleSignInWithGoogle}
+                          type="submit"
+                          >
                             <FaGoogle />
                           </button>
                         </div>

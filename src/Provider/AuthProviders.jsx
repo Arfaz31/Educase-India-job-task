@@ -22,6 +22,7 @@ const signIn = (email, password) =>{
     setLoading(true)
     return signInWithEmailAndPassword(auth, email, password)
 }
+
 const logOut = ()=>{
     setLoading(true)
     return signOut(auth)
@@ -40,7 +41,7 @@ const logOut = ()=>{
       }, []);
 
         // update user profile
-        const userUpdateData =(user,  name)=>{
+        const userUpdateData =(user, name)=>{
           setLoading(true)
          return  updateProfile (user, {
            displayName: name,

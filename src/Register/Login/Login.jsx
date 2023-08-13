@@ -7,7 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const { signIn, googleSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/setting";
@@ -42,6 +42,18 @@ const Login = () => {
         console.log(error);
       });
   };
+
+    //google login
+    const handleSignInWithGoogle = () => {
+      googleSignIn()
+        .then((result) => {
+          const user = result.user;
+          navigate(from, { replace: true });
+        })
+        .catch((error) => {
+          console.log("error massage", error.massage);
+        });
+    };
 
   return (
     <div className="bg-slate-100 pb-32 md:pt-16 pt-24">
@@ -110,6 +122,7 @@ const Login = () => {
                       <p className="text-center py-4">Or SignIn with</p>
                       <div className=" w-max mx-auto mt-3">
                         <button
+                        onClick={handleSignInWithGoogle}
                           className="btn btn-outline btn-primary"
                           type="submit"
                         >
