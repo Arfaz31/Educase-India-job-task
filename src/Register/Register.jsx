@@ -5,7 +5,7 @@ import register from "../assets/register/118046-lf20-oahmox5rjson.json";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthProviders";
 const Register = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, userUpdateData } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/setting";
@@ -16,18 +16,29 @@ const Register = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(name, email, password);
+    const phoneNumber = form.phoneNumber.value
+    console.log(name, email, password, phoneNumber);
 
-    createUser(email, password)
+    createUser( email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);
-        navigate(from, { replace: true });
-        form.reset();
+       
+        userUpdateData(result.user, name)
+          .then(() => {
+            console.log("update");
+            navigate(from, { replace: true });
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+         
       })
       .catch((error) => {
         console.log(error);
       });
+
+      form.reset()
   };
 
   return (
@@ -79,7 +90,7 @@ const Register = () => {
                         <input
                           type="text"
                           placeholder="phone number"
-                          name="phone number"
+                          name="phoneNumber"
                           className="input input-bordered"
                           required
                         />

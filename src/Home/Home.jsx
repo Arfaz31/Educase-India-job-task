@@ -10,7 +10,7 @@ const Home = () => {
             consectetur adipisicing elit.</p>
           <Link to="/register"><button className="btn btn-primary px-14 mb-6">Create Account</button> </Link>
             <br />
-            <button className="btn btn-active">Already Registered? Login</button>
+            <Link to="/login"><button className="btn btn-active">Already Registered? Login</button></Link>
           </div>
         </div>
     );
