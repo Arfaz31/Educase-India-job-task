@@ -10,7 +10,7 @@ const Login = () => {
   const { signIn, googleSignIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/setting";
+  const from = location.state?.from?.pathname || "/";
 
   const handleEmailChange = (event) => {
     const newEmail = event.target.value;

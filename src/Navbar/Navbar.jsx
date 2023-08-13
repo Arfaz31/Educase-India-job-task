@@ -17,7 +17,7 @@ const Navbar = () => {
     <li><Link to='/'>Home</Link></li>
     <li><Link to='/setting'>Account</Link></li>
    {user? <> 
-    <button onClick={handleLogOut}>LogOut</button>
+    <button className='pr-32 md:pr-0 pl-1 md:pl-0' onClick={handleLogOut}>LogOut</button>
   
    </> :
    <> 
@@ -49,7 +49,7 @@ const Navbar = () => {
 
 
         <div className="navbar-end hidden lg:flex">
-        <ul className="menu menu-horizontal font-semibold items-center mr-8 text-lg">
+        <ul className="menu menu-horizontal font-semibold items-center md:mr-8 mr-0 text-lg">
             {navItem}
           </ul>
         </div>
